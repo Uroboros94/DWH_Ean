@@ -1,0 +1,9 @@
+{
+	"name": "DHWETL",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "95c7bb6e-a9c0-4964-b7b4-26ffa6498a75",
+		"tenantId": "c06fb559-1b68-4b84-a14f-47d0d837a5ab"
+	}
+}
