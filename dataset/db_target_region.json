@@ -19,19 +19,24 @@
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
+			"nullValue": "null",
 			"quoteChar": "\""
 		},
 		"schema": [
 			{
+				"name": "Año",
 				"type": "String"
 			},
 			{
+				"name": "Mes",
 				"type": "String"
 			},
 			{
+				"name": "Region ID",
 				"type": "String"
 			},
 			{
+				"name": "Target",
 				"type": "String"
 			}
 		]
