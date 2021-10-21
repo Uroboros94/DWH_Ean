@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "ETLDWH1-3"
 		},
+		"BankMarketBlob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'BankMarketBlob'"
+		},
 		"BankMarketSources_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'BankMarketSources'"
@@ -22,10 +26,6 @@
 		"bankMarketDatabase_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'bankMarketDatabase'"
-		},
-		"BankMarketBlob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'BankMarketBlob'"
 		},
 		"BankMarketSources_properties_typeProperties_url": {
 			"type": "string",
@@ -58,6 +58,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"BankMarketBlob_connectionString": {
+						"value": "[parameters('BankMarketBlob_connectionString')]"
+					},
 					"BankMarketSources_accountKey": {
 						"value": "[parameters('BankMarketSources_accountKey')]"
 					},
@@ -69,9 +72,6 @@
 					},
 					"bankMarketDatabase_connectionString": {
 						"value": "[parameters('bankMarketDatabase_connectionString')]"
-					},
-					"BankMarketBlob_connectionString": {
-						"value": "[parameters('BankMarketBlob_connectionString')]"
 					},
 					"BankMarketSources_properties_typeProperties_url": {
 						"value": "[parameters('BankMarketSources_properties_typeProperties_url')]"

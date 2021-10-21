@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "ETLDWH1-3"
 		},
+		"BankMarketBlob_connectionString": {
+			"value": ""
+		},
 		"BankMarketSources_accountKey": {
 			"value": ""
 		},
@@ -15,9 +18,6 @@
 			"value": ""
 		},
 		"bankMarketDatabase_connectionString": {
-			"value": ""
-		},
-		"BankMarketBlob_connectionString": {
 			"value": ""
 		},
 		"BankMarketSources_properties_typeProperties_url": {
