@@ -19,8 +19,11 @@
 						"type": "DelimitedTextSource",
 						"additionalColumns": [
 							{
-								"name": "CK_Meta",
-								"value": ""
+								"name": "PK_Meta",
+								"value": {
+									"value": "CHECKSUM([Año],[Mes],[Region ID])",
+									"type": "Expression"
+								}
 							}
 						],
 						"storeSettings": {
@@ -33,7 +36,9 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink"
+						"type": "AzureSqlSink",
+						"preCopyScript": "Truncate Table DIM_Metas;",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
