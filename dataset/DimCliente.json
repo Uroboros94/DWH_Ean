@@ -2,7 +2,7 @@
 	"name": "DimCliente",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DWHGroup1",
+			"referenceName": "ConnectorAzureRafael",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {

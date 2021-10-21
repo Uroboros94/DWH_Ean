@@ -1,0 +1,45 @@
+{
+	"name": "DimMetas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ConnectorAzureRafael",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "PK_Meta",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Ao",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Mes",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Region_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TARGET",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DIM_Metas"
+		}
+	}
+}
