@@ -1,5 +1,5 @@
 {
-	"name": "TargetToMetas",
+	"name": "MiguelAngel_ETL",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -9,7 +9,7 @@
 						"referenceName": "db_target_region",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "ExtractData"
 				}
 			],
 			"sinks": [
@@ -23,10 +23,10 @@
 			],
 			"transformations": [
 				{
-					"name": "SurrogateKey1"
+					"name": "SurrogateKey"
 				}
 			],
-			"script": "source(output(\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\t{Region ID} as integer,\n\t\tTarget as decimal(18,5)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> source1\nsource1 keyGenerate(output(PK_Metas as long),\n\tstartAt: 1L) ~> SurrogateKey1\nSurrogateKey1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPK_Meta as integer,\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\tRegion_ID as integer,\n\t\tTARGET as decimal(18,5)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['Truncate Table DIM_Metas'],\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tPK_Meta = PK_Metas,\n\t\t{Año},\n\t\tMes,\n\t\tRegion_ID = {Region ID},\n\t\tTARGET = Target\n\t)) ~> StoreMeta"
+			"script": "source(output(\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\t{Region ID} as integer,\n\t\tTarget as decimal(18,5)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> ExtractData\nExtractData keyGenerate(output(PK_Metas as long),\n\tstartAt: 1L) ~> SurrogateKey\nSurrogateKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPK_Meta as integer,\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\tRegion_ID as integer,\n\t\tTARGET as decimal(18,5)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['Truncate Table DIM_Metas'],\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tPK_Meta = PK_Metas,\n\t\t{Año},\n\t\tMes,\n\t\tRegion_ID = {Region ID},\n\t\tTARGET = Target\n\t)) ~> StoreMeta"
 		}
 	}
 }

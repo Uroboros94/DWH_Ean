@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "TargetToMetas",
+						"referenceName": "MiguelAngel_ETL",
 						"type": "DataFlowReference"
 					},
 					"compute": {
