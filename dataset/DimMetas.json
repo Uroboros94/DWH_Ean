@@ -33,8 +33,9 @@
 			},
 			{
 				"name": "TARGET",
-				"type": "float",
-				"precision": 15
+				"type": "decimal",
+				"precision": 18,
+				"scale": 5
 			}
 		],
 		"typeProperties": {
