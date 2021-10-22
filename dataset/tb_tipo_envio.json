@@ -1,5 +1,5 @@
 {
-	"name": "Regiones",
+	"name": "tb_tipo_envio",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BankMarketBlob",
@@ -9,22 +9,13 @@
 			"name": "BankMarketSource"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Xml",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Regiones.txt",
+				"fileName": "tb_tipo_envio.xml",
 				"container": "files"
-			},
-			"columnDelimiter": "\t",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
-		},
-		"schema": [
-			{
-				"type": "String"
 			}
-		]
+		}
 	}
 }
