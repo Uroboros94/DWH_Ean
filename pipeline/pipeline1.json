@@ -5,14 +5,7 @@
 			{
 				"name": "PP_Metas",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Rafa_ETL",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -34,11 +27,11 @@
 				}
 			},
 			{
-				"name": "Rafa_ETL",
-				"type": "ExecuteDataFlow",
+				"name": "Copy data1",
+				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "1.00:00:00",
+					"timeout": "7.00:00:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -46,39 +39,42 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
+					"source": {
+						"type": "XmlSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "XmlReadSettings",
+							"validationMode": "none",
+							"namespaces": true
+						}
 					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
-				"name": "ETL Productos",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
 					{
-						"activity": "PP_Metas",
-						"dependencyConditions": [
-							"Succeeded"
-						]
+						"referenceName": "tb_modo_envio",
+						"type": "DatasetReference"
 					}
 				],
-				"policy": {
-					"timeout": "1.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
+				"outputs": [
+					{
+						"referenceName": "tb_Modo_Envio_Tra",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {

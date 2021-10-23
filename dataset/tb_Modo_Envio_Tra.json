@@ -1,0 +1,37 @@
+{
+	"name": "tb_Modo_Envio_Tra",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BankMarketBlob",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "BankMarketSource"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "files"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Cliente ID": {
+					"type": "string"
+				},
+				"Nombre": {
+					"type": "string"
+				},
+				"Apellido": {
+					"type": "string"
+				},
+				"Segmento": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
