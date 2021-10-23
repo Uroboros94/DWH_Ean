@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "PrepareData",
+				"name": "Copy data1",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -13,16 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "Source",
-						"value": "files//tb_modo_envio.xml"
-					},
-					{
-						"name": "Destination",
-						"value": "transform//tb_Modo_Envio_Tra"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "XmlSource",
@@ -37,60 +28,11 @@
 							"namespaces": true
 						}
 					},
-					"sink": {
-						"type": "JsonSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						},
-						"formatSettings": {
-							"type": "JsonWriteSettings"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
-								},
-								"sink": {
-									"path": "idModo"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Descripcion']"
-								},
-								"sink": {
-									"path": "Desc"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Tipo_x0020_ID']"
-								},
-								"sink": {
-									"path": "IdTipoEnvio"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "tb_modo_envio",
-						"type": "DatasetReference",
-						"parameters": {
-							"id_modo": "id_modo",
-							"Descripcion": "Descripcion",
-							"Tipo_x0020_ID": "Tipo_x0020_ID"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "tb_Modo_Envio_Tra",
 						"type": "DatasetReference"
 					}
 				]
