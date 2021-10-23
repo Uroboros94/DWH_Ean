@@ -13,7 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "files"
+				"fileName": "tb_Modo_Envio_Tra",
+				"container": "transform"
 			}
 		},
 		"schema": {
