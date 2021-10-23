@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "BankMarketSource"
+			"name": "BankMarketTransform"
 		},
 		"annotations": [],
 		"type": "Json",
