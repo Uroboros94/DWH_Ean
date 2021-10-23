@@ -93,7 +93,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "TipoDeEnvioTransform",
+						"name": "ModoDeEnvioTransform",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -179,11 +179,11 @@
 						]
 					},
 					{
-						"name": "Copy data1",
+						"name": "TipoDeEnvioTransform",
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "TipoDeEnvioTransform",
+								"activity": "ModoDeEnvioTransform",
 								"dependencyConditions": [
 									"Succeeded"
 								]
