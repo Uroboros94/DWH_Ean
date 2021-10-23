@@ -55,7 +55,7 @@
 									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
 								},
 								"sink": {
-									"path": "IdModo"
+									"path": "idModo"
 								}
 							},
 							{
