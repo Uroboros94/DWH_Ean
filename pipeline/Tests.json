@@ -72,7 +72,12 @@
 				"inputs": [
 					{
 						"referenceName": "tb_modo_envio",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"id_modo": "id_modo",
+							"Descripcion": "Descripcion",
+							"Tipo_x0020_ID": "Descripcion"
+						}
 					}
 				],
 				"outputs": [
