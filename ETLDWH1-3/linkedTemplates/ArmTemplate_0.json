@@ -880,7 +880,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tb_tipo_envio')]",
+			"name": "[concat(parameters('factoryName'), '/tb_Modo_Envio_Tra')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -889,15 +889,32 @@
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "BankMarketSource"
+					"name": "BankMarketTransform"
 				},
 				"annotations": [],
-				"type": "Xml",
+				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "tb_tipo_envio.xml",
-						"container": "files"
+						"fileName": "tb_Modo_Envio_Tra.json",
+						"container": "transform"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Cliente ID": {
+							"type": "string"
+						},
+						"Nombre": {
+							"type": "string"
+						},
+						"Apellido": {
+							"type": "string"
+						},
+						"Segmento": {
+							"type": "string"
+						}
 					}
 				}
 			},

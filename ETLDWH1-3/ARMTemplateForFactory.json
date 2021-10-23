@@ -87,6 +87,121 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Tests')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PrepareData",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "files//tb_modo_envio.xml"
+							},
+							{
+								"name": "Destination",
+								"value": "transform//tb_Modo_Envio_Tra"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "XmlSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "XmlReadSettings",
+									"validationMode": "none",
+									"namespaces": true
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
+										},
+										"sink": {
+											"path": "idModo"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Descripcion']"
+										},
+										"sink": {
+											"path": "Desc"
+										}
+									},
+									{
+										"source": {
+											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Tipo_x0020_ID']"
+										},
+										"sink": {
+											"path": "IdTipoEnvio"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "tb_modo_envio",
+								"type": "DatasetReference",
+								"parameters": {
+									"id_modo": "id_modo",
+									"Descripcion": "Descripcion",
+									"Tipo_x0020_ID": "Tipo_x0020_ID"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "tb_Modo_Envio_Tra",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ETL_Metas"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/tb_modo_envio')]",
+				"[concat(variables('factoryId'), '/datasets/tb_Modo_Envio_Tra')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DimCliente')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -861,6 +976,86 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/tb_Modo_Envio_Tra')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BankMarketBlob",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "BankMarketTransform"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "tb_Modo_Envio_Tra.json",
+						"container": "transform"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"Cliente ID": {
+							"type": "string"
+						},
+						"Nombre": {
+							"type": "string"
+						},
+						"Apellido": {
+							"type": "string"
+						},
+						"Segmento": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tb_modo_envio')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BankMarketBlob",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"id_modo": {
+						"type": "int"
+					},
+					"Descripcion": {
+						"type": "string"
+					},
+					"Tipo_x0020_ID": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "BankMarketSource"
+				},
+				"annotations": [],
+				"type": "Xml",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "tb_modo_envio.xml",
+						"container": "files"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/tb_tipo_envio')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -991,201 +1186,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/db_target_region')]",
 				"[concat(variables('factoryId'), '/datasets/DimMetas')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tb_modo_envio')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BankMarketBlob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"id_modo": {
-						"type": "int"
-					},
-					"Descripcion": {
-						"type": "string"
-					},
-					"Tipo_x0020_ID": {
-						"type": "int"
-					}
-				},
-				"folder": {
-					"name": "BankMarketSource"
-				},
-				"annotations": [],
-				"type": "Xml",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "tb_modo_envio.xml",
-						"container": "files"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tb_Modo_Envio_Tra')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BankMarketBlob",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "BankMarketTransform"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "tb_Modo_Envio_Tra",
-						"container": "transform"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"Cliente ID": {
-							"type": "string"
-						},
-						"Nombre": {
-							"type": "string"
-						},
-						"Apellido": {
-							"type": "string"
-						},
-						"Segmento": {
-							"type": "string"
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Tests')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "PrepareData",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "files//tb_modo_envio.xml"
-							},
-							{
-								"name": "Destination",
-								"value": "transform//tb_Modo_Envio_Tra"
-							}
-						],
-						"typeProperties": {
-							"source": {
-								"type": "XmlSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "XmlReadSettings",
-									"validationMode": "none",
-									"namespaces": true
-								}
-							},
-							"sink": {
-								"type": "JsonSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "JsonWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
-										},
-										"sink": {
-											"path": "IdModo"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Descripcion']"
-										},
-										"sink": {
-											"path": "Desc"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Tipo_x0020_ID']"
-										},
-										"sink": {
-											"path": "IdTipoEnvio"
-										}
-									}
-								]
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "tb_modo_envio",
-								"type": "DatasetReference",
-								"parameters": {
-									"id_modo": "id_modo",
-									"Descripcion": "Descripcion",
-									"Tipo_x0020_ID": "Tipo_x0020_ID"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "tb_Modo_Envio_Tra",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ETL_Metas"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/tb_modo_envio')]",
-				"[concat(variables('factoryId'), '/datasets/tb_Modo_Envio_Tra')]"
 			]
 		}
 	]
