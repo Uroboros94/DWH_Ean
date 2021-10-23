@@ -6,30 +6,6 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "ETLDWH1-3"
-		},
-		"BankMarketBlob_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'BankMarketBlob'"
-		},
-		"BankMarketSources_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'BankMarketSources'"
-		},
-		"ConnectorAzureRafael_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ConnectorAzureRafael'"
-		},
-		"DWHGroup1_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'DWHGroup1'"
-		},
-		"bankMarketDatabase_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'bankMarketDatabase'"
-		},
-		"BankMarketSources_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://datalakebankmarket.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -57,14 +33,8 @@
 						"typeProperties": {
 							"dataflow": {
 								"referenceName": "MiguelAngel_ETL",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"ExtTargetTable": {},
-									"AlmacenarMetasDWH": {}
-								}
+								"type": "DataFlowReference"
 							},
-							"staging": {},
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
@@ -73,10 +43,6 @@
 						}
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "ETL_Metas"
 				},
@@ -84,68 +50,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/MiguelAngel_ETL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DimCliente')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ConnectorAzureRafael",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Codigo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Cliente_ID",
-						"type": "varchar"
-					},
-					{
-						"name": "Nombre",
-						"type": "varchar"
-					},
-					{
-						"name": "Apellido",
-						"type": "varchar"
-					},
-					{
-						"name": "Segmento",
-						"type": "varchar"
-					},
-					{
-						"name": "Pais",
-						"type": "varchar"
-					},
-					{
-						"name": "Ciudad",
-						"type": "varchar"
-					},
-					{
-						"name": "Estado",
-						"type": "varchar"
-					},
-					{
-						"name": "Region",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DIM_Cliente"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ConnectorAzureRafael')]"
 			]
 		},
 		{
@@ -217,204 +121,7 @@
 					"table": "DIM_detalle_ordenes"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ConnectorAzureRafael')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DimMetas')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ConnectorAzureRafael",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "PK_Meta",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Año",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Mes",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Region_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TARGET",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 5
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DIM_Metas"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ConnectorAzureRafael')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DimProducto')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ConnectorAzureRafael",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Producto_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Categoria_Producto_ID",
-						"type": "varchar"
-					},
-					{
-						"name": "Descripcion_Subcategoria",
-						"type": "varchar"
-					},
-					{
-						"name": "Numero_Producto",
-						"type": "varchar"
-					},
-					{
-						"name": "Categoria_ID",
-						"type": "varchar"
-					},
-					{
-						"name": "Nombre_Producto",
-						"type": "varchar"
-					},
-					{
-						"name": "Categoria_Producto_ID_1",
-						"type": "varchar"
-					},
-					{
-						"name": "Descripcion_Categoria",
-						"type": "varchar"
-					},
-					{
-						"name": "Subcategoria_ID",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DIM_Producto"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ConnectorAzureRafael')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FactOrdenes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ConnectorAzureRafael",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DWH"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "num_order",
-						"type": "varchar"
-					},
-					{
-						"name": "OrderId",
-						"type": "varchar"
-					},
-					{
-						"name": "fec_orden",
-						"type": "date"
-					},
-					{
-						"name": "fec_envio",
-						"type": "date"
-					},
-					{
-						"name": "imp_subtotal",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "id_modo",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "modo_envio",
-						"type": "varchar"
-					},
-					{
-						"name": "ID_Tipo_envio",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "descripcion_envio",
-						"type": "varchar"
-					},
-					{
-						"name": "Region_ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Region_descripcion",
-						"type": "varchar"
-					},
-					{
-						"name": "Detalle_Region",
-						"type": "varchar"
-					},
-					{
-						"name": "Codigo",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "FACT_Ordenes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ConnectorAzureRafael')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LT_customer')]",
@@ -455,9 +162,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LT_productos')]",
@@ -503,9 +208,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LT_productos_categoria')]",
@@ -543,9 +246,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LT_productos_sub_categoria')]",
@@ -587,9 +288,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Regiones')]",
@@ -632,122 +331,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/db_target_region')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BankMarketBlob",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "BankMarketSource"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "db_target_region.csv",
-						"container": "files"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"nullValue": "null",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "Año",
-						"type": "String"
-					},
-					{
-						"name": "Mes",
-						"type": "String"
-					},
-					{
-						"name": "Region ID",
-						"type": "String"
-					},
-					{
-						"name": "Target",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ltDetalleOrdenes')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bankMarketDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "BankMarketDatabase"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Detalle Orden",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Numero Orden",
-						"type": "varchar"
-					},
-					{
-						"name": "Producto ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Linea Total",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "Cantidad",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Descuento",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "Precio Unitario",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "Ganancia",
-						"type": "float",
-						"precision": 15
-					}
-				],
-				"typeProperties": {
-					"schema": "maestria",
-					"table": "LT_detalle_ordenes"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bankMarketDatabase')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/lt_customer_localizacion')]",
@@ -801,64 +385,7 @@
 					}
 				]
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/tbDetalleEnvios')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "bankMarketDatabase",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "BankMarketDatabase"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "num_order",
-						"type": "varchar"
-					},
-					{
-						"name": "fec_orden",
-						"type": "date"
-					},
-					{
-						"name": "fec_envio",
-						"type": "date"
-					},
-					{
-						"name": "modo_envio",
-						"type": "varchar"
-					},
-					{
-						"name": "cliente_id",
-						"type": "varchar"
-					},
-					{
-						"name": "imp_subtotal",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "region_id",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"schema": "maestria",
-					"table": "tb_detalle_envios"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/bankMarketDatabase')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tb_tipo_envio')]",
@@ -880,77 +407,6 @@
 						"fileName": "tb_tipo_envio.xml",
 						"container": "files"
 					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BankMarketBlob')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('BankMarketBlob_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/BankMarketSources')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('BankMarketSources_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('BankMarketSources_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ConnectorAzureRafael')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('ConnectorAzureRafael_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DWHGroup1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('DWHGroup1_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/bankMarketDatabase')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('bankMarketDatabase_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -988,10 +444,7 @@
 					"script": "source(output(\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\t{Region ID} as integer,\n\t\tTarget as decimal(18,5)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> ExtTargetTable\nExtTargetTable keyGenerate(output(PK_Metas as long),\n\tstartAt: 1L) ~> AgregarSurrogateKey\nAgregarSurrogateKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPK_Meta as integer,\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\tRegion_ID as integer,\n\t\tTARGET as decimal(18,5)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['Truncate Table DIM_Metas'],\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tPK_Meta = PK_Metas,\n\t\t{Año},\n\t\tMes,\n\t\tRegion_ID = {Region ID},\n\t\tTARGET = Target\n\t)) ~> AlmacenarMetasDWH"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/db_target_region')]",
-				"[concat(variables('factoryId'), '/datasets/DimMetas')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tb_modo_envio')]",
@@ -1026,9 +479,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/tb_Modo_Envio_Tra')]",
@@ -1068,9 +519,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BankMarketBlob')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Tests')]",
@@ -1158,16 +607,11 @@
 						"outputs": [
 							{
 								"referenceName": "tb_Modo_Envio_Tra",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "ETL_Metas"
 				},
