@@ -5,6 +5,17 @@
 			"referenceName": "BankMarketBlob",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"id_modo": {
+				"type": "int"
+			},
+			"Descripcion": {
+				"type": "string"
+			},
+			"Tipo_x0020_ID": {
+				"type": "int"
+			}
+		},
 		"folder": {
 			"name": "BankMarketSource"
 		},
