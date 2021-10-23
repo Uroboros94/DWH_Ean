@@ -5,6 +5,9 @@
 			"referenceName": "BankMarketBlob",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "BankMarketTransform"
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
