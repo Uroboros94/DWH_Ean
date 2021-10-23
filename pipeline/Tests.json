@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "PrepareData",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -37,12 +37,46 @@
 							"type": "JsonWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
+								},
+								"sink": {
+									"path": "IdModo"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Descripcion']"
+								},
+								"sink": {
+									"path": "Desc"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Tipo_x0020_ID']"
+								},
+								"sink": {
+									"path": "IdTipoEnvio"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
 						"referenceName": "tb_modo_envio",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"id_modo": "id_modo",
+							"Descripcion": "Descripcion",
+							"Tipo_x0020_ID": "Tipo_x0020_ID"
+						}
 					}
 				],
 				"outputs": [
