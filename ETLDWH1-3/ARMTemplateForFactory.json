@@ -93,7 +93,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "PrepareData",
+						"name": "Copy data1",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -103,16 +103,7 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "files//tb_modo_envio.xml"
-							},
-							{
-								"name": "Destination",
-								"value": "transform//tb_Modo_Envio_Tra"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "XmlSource",
@@ -142,7 +133,7 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@id_modo']"
+											"path": "[['@id_modo']"
 										},
 										"sink": {
 											"path": "idModo"
@@ -150,7 +141,7 @@
 									},
 									{
 										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Descripcion']"
+											"path": "[['@Descripcion']"
 										},
 										"sink": {
 											"path": "Desc"
@@ -158,13 +149,14 @@
 									},
 									{
 										"source": {
-											"path": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio'][0]['@Tipo_x0020_ID']"
+											"path": "[['@Tipo_x0020_ID']"
 										},
 										"sink": {
 											"path": "IdTipoEnvio"
 										}
 									}
-								]
+								],
+								"collectionReference": "$['Data']['table_maestria.tb_modo_envio']['maestria.tb_modo_envio']"
 							}
 						},
 						"inputs": [
@@ -174,7 +166,7 @@
 								"parameters": {
 									"id_modo": "id_modo",
 									"Descripcion": "Descripcion",
-									"Tipo_x0020_ID": "Tipo_x0020_ID"
+									"Tipo_x0020_ID": "Descripcion"
 								}
 							}
 						],
