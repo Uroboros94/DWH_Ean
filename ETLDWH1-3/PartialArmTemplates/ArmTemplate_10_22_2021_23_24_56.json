@@ -13,41 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/tb_modo_envio')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BankMarketBlob",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"id_modo": {
-						"type": "int"
-					},
-					"Descripcion": {
-						"type": "string"
-					},
-					"Tipo_x0020_ID": {
-						"type": "int"
-					}
-				},
-				"folder": {
-					"name": "BankMarketSource"
-				},
-				"annotations": [],
-				"type": "Xml",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "tb_modo_envio.xml",
-						"container": "files"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/tb_Modo_Envio_Tra')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -84,41 +49,6 @@
 							"type": "string"
 						}
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MiguelAngel_ETL')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "db_target_region",
-								"type": "DatasetReference"
-							},
-							"name": "ExtTargetTable"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DimMetas",
-								"type": "DatasetReference"
-							},
-							"name": "AlmacenarMetasDWH"
-						}
-					],
-					"transformations": [
-						{
-							"name": "AgregarSurrogateKey"
-						}
-					],
-					"script": "source(output(\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\t{Region ID} as integer,\n\t\tTarget as decimal(18,5)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> ExtTargetTable\nExtTargetTable keyGenerate(output(PK_Metas as long),\n\tstartAt: 1L) ~> AgregarSurrogateKey\nAgregarSurrogateKey sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPK_Meta as integer,\n\t\t{Año} as integer,\n\t\tMes as integer,\n\t\tRegion_ID as integer,\n\t\tTARGET as decimal(18,5)\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['Truncate Table DIM_Metas'],\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tPK_Meta = PK_Metas,\n\t\t{Año},\n\t\tMes,\n\t\tRegion_ID = {Region ID},\n\t\tTARGET = Target\n\t)) ~> AlmacenarMetasDWH"
 				}
 			},
 			"dependsOn": []
@@ -218,74 +148,18 @@
 						"outputs": [
 							{
 								"referenceName": "tb_Modo_Envio_Tra",
-								"type": "DatasetReference",
-								"parameters": {}
+								"type": "DatasetReference"
 							}
 						]
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
 				"folder": {
 					"name": "ETL_Metas"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/tb_modo_envio')]",
 				"[concat(variables('factoryId'), '/datasets/tb_Modo_Envio_Tra')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Main')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "PP_Metas",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "MiguelAngel_ETL",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"ExtTargetTable": {},
-									"AlmacenarMetasDWH": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Coarse"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ETL_Metas"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/MiguelAngel_ETL')]"
 			]
 		}
 	]

@@ -1047,7 +1047,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "files"
+						"fileName": "tb_Modo_Envio_Tra",
+						"container": "transform"
 					}
 				},
 				"schema": {
@@ -1089,7 +1090,16 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [],
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "files//tb_modo_envio.xml"
+							},
+							{
+								"name": "Destination",
+								"value": "transform//tb_Modo_Envio_Tra"
+							}
+						],
 						"typeProperties": {
 							"source": {
 								"type": "XmlSource",
